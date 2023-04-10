@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>OpenAI Chat</title>
+  </head>
+  <body>
+    <h1>OpenAI Chat</h1>
+    <div>
+      <input type="text" id="prompt" />
+      <button id="send">Send</button>
+    </div>
+    <div id="response"></div>
+
+    <script>
+      const sendInput = async () => {
+        const prompt = document.querySelector("#prompt").value;
+        const responseEl = document.querySelector("#response");
+
+        try {
+          const response = await fetch(
+            `/api/generate?prompt=${encodeURIComponent(prompt)}`
+          );
+          const { message } = await response.json();
+          responseEl.innerText = message;
+        } catch (err) {
+          console.error(err);
+          responseEl.innerText = "Error generating response from OpenAI";
+        }
+      };
+
+      document.querySelector("#send").addEventListener("click", sendInput);
+    </script>
+  </body>
+</html>
